@@ -11,13 +11,13 @@ public class Server {
 	
 	public static Queue<Player> q = new LinkedList<>();
 	
-	public static void main(String[] args) throws UnknownHostException {
+	public static void main(String[] args) throws UnknownHostException{
 
 		ServerSocket socket = null;
 		Socket client=null;
 
 		try {
-			socket = new ServerSocket(9812);
+			socket = new ServerSocket(9871);
 			System.out.println("ServerSocket Created!");
 			
 			int nr=1;

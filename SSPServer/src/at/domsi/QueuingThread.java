@@ -20,9 +20,6 @@ public class QueuingThread extends Thread {
 
 		try {
 
-			int size = Server.q.size();
-			System.out.println(size);
-
 			Player p = new Player(client);
 
 			if (Server.q.size() % 2 == 0) {
