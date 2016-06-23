@@ -38,12 +38,14 @@ public class QueuingThread extends Thread {
 				do {
 
 					System.out.println("Rounds Left: " + roundsToPlay);
+					
 					inP1 = m.getP1().getInStream().readLine();
-
 					moveP1 = Integer.parseInt(inP1);
+					System.out.println(moveP1);
 
 					inP2 = m.getP2().getInStream().readLine();
 					moveP2 = Integer.parseInt(inP2);
+					System.out.println(moveP2);
 
 					int winner = checkWinner(moveP1, moveP2);
 

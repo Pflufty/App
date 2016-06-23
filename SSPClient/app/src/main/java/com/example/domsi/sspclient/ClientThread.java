@@ -1,7 +1,9 @@
 package com.example.domsi.sspclient;
 
 import android.os.AsyncTask;
+import android.support.annotation.MainThread;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,8 +19,14 @@ public class ClientThread extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
+        Socket client;
+
+        Log.d("HIT", "In Thread");
+
         try {
-            Socket client = new Socket("localhost", 9871);
+            client = new Socket("10.0.2.2", 9871);
+
+            Log.d("HIT", "Created");
 
             PrintWriter outStream = new PrintWriter(client.getOutputStream(), true);
             BufferedReader inStream = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -29,9 +37,17 @@ public class ClientThread extends AsyncTask<Void, Void, Void> {
 
             }
 
+            Log.d("HIT", "Game Started");
+
             String inputFromServer;
 
             do {
+
+                MainActivity.startGame();
+
+                while(MainActivity.selected==false){
+
+                }
 
                 outStream.println(MainActivity.move);
 
@@ -48,19 +64,7 @@ public class ClientThread extends AsyncTask<Void, Void, Void> {
 
                     winner = Integer.parseInt(win[0]);
 
-                    switch (winner) {
-                        case 0:
-                            System.out.println("Unentschieden");
-                            break;
-                        case 1:
-                            System.out.println("Spieler 1 hat gewonnen!");
-                            break;
-                        case 2:
-                            System.out.println("Spieler 2 hat gewonnen!");
-                            break;
-                    }
-
-                    System.out.println(points[0] + " : " + points[1]);
+                    MainActivity.setWinnerTxt(winner, points);
                 }
 
                 inputFromServer = inStream.readLine();
@@ -69,8 +73,8 @@ public class ClientThread extends AsyncTask<Void, Void, Void> {
             int index = inputFromServer.lastIndexOf("/");
             index++;
             inputFromServer = inputFromServer.substring(index, inputFromServer.length());
-            System.out.println();
-            System.out.println("Spieler " + inputFromServer + " hat die Partie gewonnen!");
+
+
 
             client.close();
         } catch (UnknownHostException hostEx) {
