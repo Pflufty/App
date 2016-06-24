@@ -27,8 +27,8 @@ public class QueuingThread extends Thread {
 				Player p2 = Server.q.poll();
 				Match m = new Match(p1, p2);
 
-				m.getP1().getOutStream().println("Queue/Go");
-				m.getP2().getOutStream().println("Queue/Go");
+				m.getP1().getOutStream().println("Queue/Go/1");
+				m.getP2().getOutStream().println("Queue/Go/2");
 
 				String inP1;
 				String inP2;
@@ -41,11 +41,9 @@ public class QueuingThread extends Thread {
 					
 					inP1 = m.getP1().getInStream().readLine();
 					moveP1 = Integer.parseInt(inP1);
-					System.out.println(moveP1);
 
 					inP2 = m.getP2().getInStream().readLine();
 					moveP2 = Integer.parseInt(inP2);
-					System.out.println(moveP2);
 
 					int winner = checkWinner(moveP1, moveP2);
 

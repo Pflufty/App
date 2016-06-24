@@ -17,7 +17,7 @@ public class Client {
 			PrintWriter outStream = new PrintWriter(client.getOutputStream(), true);
 			BufferedReader inStream = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-			System.out.println(inStream.readLine());
+			System.out.println("Connected");
 
 			while (inStream.readLine().equals("Queue/Wait")) {
 

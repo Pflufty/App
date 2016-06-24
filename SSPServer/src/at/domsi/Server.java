@@ -30,7 +30,6 @@ public class Server {
 				Player p = new Player(client);
 				q.add(p);
 				System.out.println("Client " + nr + " Connected!");
-				p.getOutStream().println("Connected: Player " + nr);
 				
 				thread.start();
 				nr++;

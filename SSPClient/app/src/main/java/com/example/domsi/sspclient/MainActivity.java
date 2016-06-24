@@ -1,6 +1,8 @@
 package com.example.domsi.sspclient;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,9 +34,16 @@ public class MainActivity extends AppCompatActivity {
 
     static int move = 0;
     static boolean selected = false;
+    static int PlayerNr=0;
+
+    static AlertDialog.Builder gameWinner;
+
+    private static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        instance = this;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -50,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         btnPapier = (Button) findViewById(R.id.btnPapier);
 
         setNotClickable();
+        gameWinner=new AlertDialog.Builder(this);
 
         new ClientThread().execute();
     }
@@ -121,5 +131,10 @@ public class MainActivity extends AppCompatActivity {
 
         txtScoreP1.setText(points[0]);
         txtScoreP2.setText(points[1]);
+    }
+
+    public static void backToStart(){
+        Intent queueStarted= new Intent(instance, PreGameActivity.class);
+        instance.startActivity(queueStarted);
     }
 }
