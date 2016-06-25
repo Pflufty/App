@@ -104,10 +104,10 @@ public class ClientThread extends AsyncTask<Void, String, int[]> {
     @Override
     protected void onPostExecute(int[] winnerInfo) {
         MainActivity.gameWinner.setTitle("Das Spiel ist vorbei!");
-        if ((winnerInfo[0] == 1 && winnerInfo[1] == 1) || (winnerInfo[0] == 2 && winnerInfo[1] == 1)) {
-            MainActivity.gameWinner.setMessage("Der Gewinner ist Spieler " + 2 + "!");
-        } else if ((winnerInfo[0] == 2 && winnerInfo[1] == 2) || (winnerInfo[0] == 1 && winnerInfo[1] == 2)) {
+        if ((winnerInfo[0] == 1 && winnerInfo[1] == 1) || (winnerInfo[0] == 2 && winnerInfo[1] == 2)) {
             MainActivity.gameWinner.setMessage("Der Gewinner ist Spieler " + 1 + "!");
+        } else if ((winnerInfo[0] == 2 && winnerInfo[1] == 1) || (winnerInfo[0] == 1 && winnerInfo[1] == 2)) {
+            MainActivity.gameWinner.setMessage("Der Gewinner ist Spieler " + 2 + "!");
         }
         MainActivity.gameWinner.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             @Override
