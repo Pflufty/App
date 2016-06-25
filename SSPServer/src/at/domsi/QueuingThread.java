@@ -21,6 +21,9 @@ public class QueuingThread extends Thread {
 		try {
 
 			Player p = new Player(client);
+			
+			//String name=p.getInStream().readLine();
+			//p.setName(name);
 
 			if (Server.q.size() % 2 == 0) {
 				Player p1 = Server.q.poll();
@@ -60,9 +63,9 @@ public class QueuingThread extends Thread {
 					}
 
 					m.getP1().getOutStream()
-							.println("Match/Winner/" + winner + ":" + m.getWinsP1() + ";" + m.getWinsP2());
+							.println("Match/Winner/" + winner + "/" + m.getWinsP1()+ ":"+ moveP1 + ";" + m.getWinsP2() + ":" + moveP2);
 					m.getP2().getOutStream()
-							.println("Match/Winner/" + winner + ":" + m.getWinsP1() + ";" + m.getWinsP2());
+							.println("Match/Winner/" + winner + "/" + m.getWinsP1()+ ":"+ moveP1 + ";" + m.getWinsP2() + ":" + moveP2);
 
 					if (roundsToPlay > 0 && m.getWinsP1() != 2 && m.getWinsP2() != 2) {
 						m.getP1().getOutStream().println("Match/Next");

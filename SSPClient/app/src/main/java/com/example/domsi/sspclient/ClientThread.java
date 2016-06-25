@@ -1,11 +1,7 @@
 package com.example.domsi.sspclient;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.annotation.MainThread;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,46 +13,38 @@ import java.net.UnknownHostException;
 /**
  * Created by User on 21.06.2016.
  */
-public class ClientThread extends AsyncTask<Void, String, Integer> {
+public class ClientThread extends AsyncTask<Void, String, int[]> {
+
+    int ownPlayerNr = 0;
 
     @Override
-    protected Integer doInBackground(Void... params) {
-        Socket client;
-
-        int gameWinner=0;
-
-        Log.d("HIT", "In Thread");
+    protected int[] doInBackground(Void... params) {
+        Socket client = null;
+        int[] gameWinner = new int[2];
 
         try {
             client = new Socket("10.0.2.2", 9871);
-
-            Log.d("HIT", "Created");
 
             PrintWriter outStream = new PrintWriter(client.getOutputStream(), true);
             BufferedReader inStream = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
             String input;
 
-            do{
-                input=inStream.readLine();
-            }while(input.equals("Queue/Wait"));
+            do {
+                input = inStream.readLine();
+            } while (input.equals("Queue/Wait"));
 
-            Log.d("HIT", "Match Started");
-
-            int indexPlayerNr=input.lastIndexOf("/");
+            int indexPlayerNr = input.lastIndexOf("/");
             indexPlayerNr++;
-            input=input.substring(indexPlayerNr, input.length());
-            MainActivity.PlayerNr=Integer.parseInt(input);
-
-            Log.d("HIT", "Game Started");
+            input = input.substring(indexPlayerNr, input.length());
+            ownPlayerNr = Integer.parseInt(input);
 
             String inputFromServer;
 
             do {
-
                 MainActivity.startGame();
 
-                while(MainActivity.selected==false){
+                while (MainActivity.selected == false) {
 
                 }
 
@@ -65,10 +53,10 @@ public class ClientThread extends AsyncTask<Void, String, Integer> {
                 String answer = inStream.readLine();
 
                 if (answer.startsWith("Match/Winner/")) {
-                    int index = answer.lastIndexOf("/");
-                    answer = answer.substring(index + 1, answer.length());
 
-                    String[] win = answer.split(":");
+                    String[] allInfos = answer.split("/");
+                    String winner = allInfos[2];
+                    String[] win = {winner, allInfos[3]};
 
                     super.publishProgress(win);
                 }
@@ -79,7 +67,8 @@ public class ClientThread extends AsyncTask<Void, String, Integer> {
             int index = inputFromServer.lastIndexOf("/");
             index++;
             inputFromServer = inputFromServer.substring(index, inputFromServer.length());
-            gameWinner=Integer.parseInt(inputFromServer);
+            gameWinner[0] = ownPlayerNr;
+            gameWinner[1] = Integer.parseInt(inputFromServer);
 
             client.close();
         } catch (UnknownHostException hostEx) {
@@ -92,27 +81,40 @@ public class ClientThread extends AsyncTask<Void, String, Integer> {
 
     @Override
     protected void onProgressUpdate(String... values) {
-        String[] points = values[1].split(";");
 
-        String winner=values[0];
+        int winner = Integer.parseInt(values[0]);
 
-        int bla=Integer.parseInt(winner);
+        String[] otherInfos = values[1].split(";");
+        String[] infosP1 = otherInfos[0].split(":");
+        String[] infosP2 = otherInfos[1].split(":");
+        String[] points = {infosP1[0], infosP2[0]};
 
-        MainActivity.setWinnerTxt(bla, points);
+        int moveOtherPLayer;
+
+        if (ownPlayerNr == 1) {
+            moveOtherPLayer = Integer.parseInt(infosP2[1]);
+        } else {
+            moveOtherPLayer = Integer.parseInt(infosP1[1]);
+        }
+
+        MainActivity.setWinnerTxt(winner, points, moveOtherPLayer, ownPlayerNr);
+
     }
 
     @Override
-    protected void onPostExecute(Integer winner) {
-        Log.d("PostExecute", winner+"");
+    protected void onPostExecute(int[] winnerInfo) {
         MainActivity.gameWinner.setTitle("Das Spiel ist vorbei!");
-        MainActivity.gameWinner.setMessage("Der Gewinner ist Spieler "+winner+"!");
+        if ((winnerInfo[0] == 1 && winnerInfo[1] == 1) || (winnerInfo[0] == 2 && winnerInfo[1] == 1)) {
+            MainActivity.gameWinner.setMessage("Der Gewinner ist Spieler " + 2 + "!");
+        } else if ((winnerInfo[0] == 2 && winnerInfo[1] == 2) || (winnerInfo[0] == 1 && winnerInfo[1] == 2)) {
+            MainActivity.gameWinner.setMessage("Der Gewinner ist Spieler " + 1 + "!");
+        }
         MainActivity.gameWinner.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 MainActivity.backToStart();
             }
         });
-
         MainActivity.gameWinner.show();
     }
 }

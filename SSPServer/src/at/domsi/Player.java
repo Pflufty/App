@@ -10,6 +10,7 @@ public class Player {
 	Socket client;
 	BufferedReader inStream;
 	PrintWriter outStream;
+	String name;
 	
 	public Player(Socket client) {
 		super();
@@ -40,5 +41,11 @@ public class Player {
 	}
 	public void setOutStream(PrintWriter outStream) {
 		this.outStream = outStream;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 }

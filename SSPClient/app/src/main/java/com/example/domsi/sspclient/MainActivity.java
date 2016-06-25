@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
     static int move = 0;
     static boolean selected = false;
-    static int PlayerNr=0;
 
     static AlertDialog.Builder gameWinner;
 
@@ -59,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
         btnPapier = (Button) findViewById(R.id.btnPapier);
 
         setNotClickable();
-        gameWinner=new AlertDialog.Builder(this);
+        gameWinner = new AlertDialog.Builder(this);
+
+        setWaitingMark();
 
         new ClientThread().execute();
     }
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         btnSchere.setClickable(true);
         btnStein.setClickable(true);
 
-        selected=false;
+        selected = false;
     }
 
     public static void setNotClickable() {
@@ -78,11 +79,17 @@ public class MainActivity extends AppCompatActivity {
         btnStein.setClickable(false);
     }
 
+    public static void setWaitingMark(){
+        imgP1.setImageResource(R.drawable.waiting);
+        imgP2.setImageResource(R.drawable.waiting);
+    }
+
     public void btnSchereClicked(View view) {
         move = 1;
         selected = true;
         setNotClickable();
         setOwnMovePic();
+        imgP2.setImageResource(R.drawable.waiting);
     }
 
     public void btnSteinClicked(View view) {
@@ -90,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         selected = true;
         setNotClickable();
         setOwnMovePic();
+        imgP2.setImageResource(R.drawable.waiting);
     }
 
     public void btnPapierClicked(View view) {
@@ -97,44 +105,78 @@ public class MainActivity extends AppCompatActivity {
         selected = true;
         setNotClickable();
         setOwnMovePic();
+        imgP2.setImageResource(R.drawable.waiting);
     }
 
-    public void setOwnMovePic(){
+    public void setOwnMovePic() {
         switch (move) {
             case 1:
-                imgP1.setBackground(getDrawable(R.drawable.schere));
+                imgP1.setImageResource(R.drawable.schere);
                 break;
             case 2:
-                imgP1.setBackground(getDrawable(R.drawable.stein));
+                imgP1.setImageResource(R.drawable.stein);
                 break;
             case 3:
-                imgP1.setBackground(getDrawable(R.drawable.papier));
+                imgP1.setImageResource(R.drawable.papier);
                 break;
         }
     }
 
-    public static void setWinnerTxt(int winner, String[] points){
+    public static void setWinnerTxt(int winner, String[] points, int moveOtherPlayer, int playerNr) {
+
+        switch (moveOtherPlayer) {
+            case 1:
+                imgP2.setImageResource(R.drawable.schere);
+                break;
+            case 2:
+                imgP2.setImageResource(R.drawable.stein);
+                break;
+            case 3:
+                imgP2.setImageResource(R.drawable.papier);
+                break;
+
+        }
+
         switch (winner) {
             case 0:
                 txtWinner.setText("Unentschieden!");
                 txtWinner.setBackgroundResource(R.color.grey);
                 break;
             case 1:
-                txtWinner.setText("Player "+winner+" hat gewonnen!");
-                txtWinner.setBackgroundResource(R.color.green);
+                if(playerNr==1){
+                    txtWinner.setText("Player " + 1 + " hat gewonnen!");
+                    txtWinner.setBackgroundResource(R.color.green);
+
+                    txtScoreP1.setText(points[0]);
+                    txtScoreP2.setText(points[1]);
+                }else{
+                    txtWinner.setText("Player " + 2 + " hat gewonnen!");
+                    txtWinner.setBackgroundResource(R.color.red);
+
+                    txtScoreP1.setText(points[1]);
+                    txtScoreP2.setText(points[0]);
+                }
                 break;
             case 2:
-                txtWinner.setText("Player "+winner+" hat gewonnen!");
-                txtWinner.setBackgroundResource(R.color.red);
+                if(playerNr==2){
+                    txtWinner.setText("Player " + 1 + " hat gewonnen!");
+                    txtWinner.setBackgroundResource(R.color.green);
+
+                    txtScoreP1.setText(points[1]);
+                    txtScoreP2.setText(points[0]);
+                }else{
+                    txtWinner.setText("Player " + 2 + " hat gewonnen!");
+                    txtWinner.setBackgroundResource(R.color.red);
+
+                    txtScoreP1.setText(points[0]);
+                    txtScoreP2.setText(points[1]);
+                }
                 break;
         }
-
-        txtScoreP1.setText(points[0]);
-        txtScoreP2.setText(points[1]);
     }
 
-    public static void backToStart(){
-        Intent queueStarted= new Intent(instance, PreGameActivity.class);
+    public static void backToStart() {
+        Intent queueStarted = new Intent(instance, PreGameActivity.class);
         instance.startActivity(queueStarted);
     }
 }

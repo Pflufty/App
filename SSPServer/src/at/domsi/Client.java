@@ -40,30 +40,16 @@ public class Client {
 
 				String answer = inStream.readLine();
 
-				int winner = 0;
-
 				if (answer.startsWith("Match/Winner/")) {
-					int index = answer.lastIndexOf("/");
-					answer = answer.substring(index + 1, answer.length());
+					String[] allInfos=answer.split("/");
+                    String won=allInfos[2];
+                    String[] win={won, allInfos[3]};
+                    
+                    String[] otherInfos=win[1].split(";");
+                    String[] infosP1=otherInfos[0].split(":");
+                    String[] infosP2=otherInfos[1].split(":");
 
-					String[] win = answer.split(":");
-					String[] points = win[1].split(";");
-
-					winner = Integer.parseInt(win[0]);
-
-					switch (winner) {
-					case 0:
-						System.out.println("Unentschieden");
-						break;
-					case 1:
-						System.out.println("Spieler 1 hat gewonnen!");
-						break;
-					case 2:
-						System.out.println("Spieler 2 hat gewonnen!");
-						break;
-					}
-
-					System.out.println(points[0] + " : " + points[1]);
+					System.out.println(infosP1[0] + " : " + infosP2[0]);
 				}
 
 				inputFromServer = inStream.readLine();
