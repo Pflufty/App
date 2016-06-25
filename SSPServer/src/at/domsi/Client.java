@@ -16,20 +16,24 @@ public class Client {
 
 			PrintWriter outStream = new PrintWriter(client.getOutputStream(), true);
 			BufferedReader inStream = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			
+			Scanner sc = new Scanner(System.in);
 
 			System.out.println("Connected");
 
+			System.out.println("Gib deinen Namen ein:");
+			String username=sc.next();
+			outStream.println(username);
+			
 			while (inStream.readLine().equals("Queue/Wait")) {
 
 			}
-
-			Scanner sc = new Scanner(System.in);
+			
 			String inputFromServer;
-
+			
 			do {
 
 				int input;
-
 				do {
 					sc = new Scanner(System.in);
 					System.out.println();
@@ -59,7 +63,7 @@ public class Client {
 			index++;
 			inputFromServer = inputFromServer.substring(index, inputFromServer.length());
 			System.out.println();
-			System.out.println("Spieler " + inputFromServer + " hat die Partie gewonnen!");
+			System.out.println(inputFromServer + " hat die Partie gewonnen!");
 
 			sc.close();
 			client.close();

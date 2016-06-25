@@ -10,5 +10,13 @@
         android:id="@+id/btnJoinQueue"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:onClick="btnJoinQueueClciked"/>
+        android:onClick="btnJoinQueueClicked"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:id="@+id/editUsername"
+        android:layout_below="@+id/btnJoinQueue"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

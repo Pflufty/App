@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     static int move = 0;
     static boolean selected = false;
+    static String username;
 
     static AlertDialog.Builder gameWinner;
 
@@ -57,10 +58,14 @@ public class MainActivity extends AppCompatActivity {
         btnStein = (Button) findViewById(R.id.btnStein);
         btnPapier = (Button) findViewById(R.id.btnPapier);
 
-        setNotClickable();
         gameWinner = new AlertDialog.Builder(this);
 
+        setNotClickable();
         setWaitingMark();
+
+        Bundle params=getIntent().getExtras();
+        username=params.getString("Username");
+        txtP1.setText(username);
 
         new ClientThread().execute();
     }

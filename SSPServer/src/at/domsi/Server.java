@@ -28,6 +28,8 @@ public class Server {
 				QueuingThread thread=new QueuingThread(client, nr);
 				
 				Player p = new Player(client);
+				String username=p.getInStream().readLine();
+				p.setName(username);
 				q.add(p);
 				System.out.println("Client " + nr + " Connected!");
 				
