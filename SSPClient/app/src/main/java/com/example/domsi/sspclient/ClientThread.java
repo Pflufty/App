@@ -16,8 +16,6 @@ import java.net.UnknownHostException;
  */
 public class ClientThread extends AsyncTask<Void, String, String> {
 
-    int ownPlayerNr = 0;
-
     @Override
     protected String doInBackground(Void... params) {
         Socket client = null;
@@ -40,9 +38,9 @@ public class ClientThread extends AsyncTask<Void, String, String> {
             String playerNr=gameInfos[2];
             String[] playerNames=gameInfos[3].split(";");
 
-            ownPlayerNr = Integer.parseInt(playerNr);
+            MainActivity.ownPlayerNr = Integer.parseInt(playerNr);
 
-            if(ownPlayerNr==2){
+            if(MainActivity.ownPlayerNr==2){
                 String[] names={"postPlayername", playerNames[0]};
                 super.publishProgress(names);
             }else{
@@ -92,7 +90,7 @@ public class ClientThread extends AsyncTask<Void, String, String> {
     @Override
     protected void onProgressUpdate(String... values) {
         if(values[0].equals("postMove")){
-            int winner = Integer.parseInt(values[1]);
+            String winner = values[1];
 
             String[] otherInfos = values[2].split(";");
             String[] infosP1 = otherInfos[0].split(":");
@@ -101,13 +99,13 @@ public class ClientThread extends AsyncTask<Void, String, String> {
 
             int moveOtherPLayer;
 
-            if (ownPlayerNr == 1) {
+            if (MainActivity.ownPlayerNr == 1) {
                 moveOtherPLayer = Integer.parseInt(infosP2[1]);
             } else {
                 moveOtherPLayer = Integer.parseInt(infosP1[1]);
             }
 
-            MainActivity.setWinnerTxt(winner, points, moveOtherPLayer, ownPlayerNr);
+            MainActivity.setWinnerTxt(winner, points, moveOtherPLayer, MainActivity.ownPlayerNr);
         }
 
         if(values[0].equals("postPlayername")){
@@ -118,7 +116,7 @@ public class ClientThread extends AsyncTask<Void, String, String> {
     @Override
     protected void onPostExecute(String winner) {
         MainActivity.gameWinner.setTitle("Das Spiel ist vorbei!");
-        MainActivity.gameWinner.setMessage(winner+" hat die Parite gewonnen!");
+        MainActivity.gameWinner.setMessage(winner+" hat das Match gewonnen!");
         MainActivity.gameWinner.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

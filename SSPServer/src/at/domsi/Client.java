@@ -35,7 +35,6 @@ public class Client {
 
 				int input;
 				do {
-					sc = new Scanner(System.in);
 					System.out.println();
 					System.out.println("Gib eine Nummer ein<1,2,3>:");
 					input = sc.nextInt();

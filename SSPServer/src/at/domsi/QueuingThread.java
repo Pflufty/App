@@ -46,23 +46,26 @@ public class QueuingThread extends Thread {
 					moveP2 = Integer.parseInt(inP2);
 
 					int winner = checkWinner(moveP1, moveP2);
+					String winnerName="NoWinner";
 
 					if (winner == 1) {
 						int newWins = m.getWinsP1();
 						newWins++;
 						m.setWinsP1(newWins);
 						roundsToPlay--;
+						winnerName=m.getP1().getName();
 					} else if (winner == 2) {
 						int newWins = m.getWinsP2();
 						newWins++;
 						m.setWinsP2(newWins);
 						roundsToPlay--;
+						winnerName=m.getP2().getName();
 					}
 
 					m.getP1().getOutStream()
-							.println("Match/Winner/" + winner + "/" + m.getWinsP1()+ ":"+ moveP1 + ";" + m.getWinsP2() + ":" + moveP2);
+							.println("Match/Winner/" + winnerName + "/" + m.getWinsP1()+ ":"+ moveP1 + ";" + m.getWinsP2() + ":" + moveP2);
 					m.getP2().getOutStream()
-							.println("Match/Winner/" + winner + "/" + m.getWinsP1()+ ":"+ moveP1 + ";" + m.getWinsP2() + ":" + moveP2);
+							.println("Match/Winner/" + winnerName + "/" + m.getWinsP1()+ ":"+ moveP1 + ";" + m.getWinsP2() + ":" + moveP2);
 
 					if (roundsToPlay > 0 && m.getWinsP1() != 2 && m.getWinsP2() != 2) {
 						m.getP1().getOutStream().println("Match/Next");
