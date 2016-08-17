@@ -1,23 +1,17 @@
 package com.example.domsi.sspclient;
 
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,12 +28,15 @@ public class MainActivity extends AppCompatActivity {
 
     static int move = 0;
     static boolean selected = false;
-    static String username;
     static int ownPlayerNr=0;
 
     static AlertDialog.Builder gameWinner;
 
     private static MainActivity instance;
+
+    public static Socket client=null;
+    public static PrintWriter outStream=null;
+    public static BufferedReader inStream=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +61,7 @@ public class MainActivity extends AppCompatActivity {
         setNotClickable();
         setWaitingMark();
 
-        Bundle params = getIntent().getExtras();
-        username = params.getString("Username");
-        txtP1.setText(username);
+        txtP1.setText(OverviewActivtiy.username);
 
         new ClientThread().execute();
     }
@@ -128,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void setWinnerTxt(String winner, String[] points, int moveOtherPlayer, int playerNr) {
+    public static void setWinnerTxt(String winner, String[] points, int moveOtherPlayer) {
 
         switch (moveOtherPlayer) {
             case 1:
@@ -146,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         if(winner.equals("NoWinner")){
             txtWinner.setText("Unentschieden!");
             txtWinner.setBackgroundResource(R.color.grey);
-        }else if(winner.equals(username)){
+        }else if(winner.equals(OverviewActivtiy.username)){
             txtWinner.setText(winner + " hat gewonnen!");
             txtWinner.setBackgroundResource(R.color.green);
         }else{
@@ -163,8 +158,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void backToStart() {
-        Intent queueStarted = new Intent(instance, PreGameActivity.class);
-        instance.startActivity(queueStarted);
+    public static void backToStart(int[] newStats) {
+        Intent backToOverview = new Intent(instance, OverviewActivtiy.class);
+        backToOverview.putExtra("Stats", newStats);
+        instance.startActivity(backToOverview);
     }
 }

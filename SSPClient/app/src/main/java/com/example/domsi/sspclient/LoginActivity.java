@@ -7,17 +7,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-/**
- * Created by domsi on 24.06.2016.
- */
-public class PreGameActivity extends AppCompatActivity{
+public class LoginActivity extends AppCompatActivity{
 
     EditText editUsername;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pregame);
+        setContentView(R.layout.activity_login);
 
         editUsername= (EditText) findViewById(R.id.editUsername);
     }
@@ -25,11 +22,10 @@ public class PreGameActivity extends AppCompatActivity{
     public void btnJoinQueueClicked(View view) {
         String username="";
         username=editUsername.getText().toString();
-        Log.d("Username",username);
         if(!(username.equalsIgnoreCase(""))){
-            Intent queueStarted= new Intent(this, MainActivity.class);
-            queueStarted.putExtra("Username",username);
-            startActivity(queueStarted);
+            Intent loggedIn= new Intent(this, OverviewActivtiy.class);
+            loggedIn.putExtra("Username", username);
+            startActivity(loggedIn);
         }
     }
 }

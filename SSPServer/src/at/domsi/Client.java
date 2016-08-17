@@ -19,13 +19,17 @@ public class Client {
 			
 			Scanner sc = new Scanner(System.in);
 
-			System.out.println("Connected");
+			System.out.println("Connection");
 
 			System.out.println("Gib deinen Namen ein:");
 			String username=sc.next();
-			outStream.println(username);
+			outStream.println("Connection/"+username);
 			
-			while (inStream.readLine().equals("Queue/Wait")) {
+			System.out.println(inStream.readLine());
+			
+			outStream.println("Search/"+username);
+			
+			while (!(inStream.readLine().startsWith("Queue/Go/"))) {
 
 			}
 			

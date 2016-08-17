@@ -11,17 +11,23 @@ public class Player {
 	BufferedReader inStream;
 	PrintWriter outStream;
 	String name;
+	int played;
+	int won;
+	int elo;
 	
 	public Player(Socket client) {
 		super();
 		this.client = client;
+		this.name="";
 		try {
 			this.inStream = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			this.outStream = new PrintWriter(client.getOutputStream(), true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		this.elo=1000;
+		this.played=0;
+		this.won=0;
 	}
 	
 	public Socket getClient() {
@@ -48,4 +54,29 @@ public class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public int getPlayed() {
+		return played;
+	}
+
+	public void setPlayed(int played) {
+		this.played = played;
+	}
+
+	public int getWon() {
+		return won;
+	}
+
+	public void setWon(int won) {
+		this.won = won;
+	}
+
+	public int getElo() {
+		return elo;
+	}
+
+	public void setElo(int elo) {
+		this.elo = elo;
+	}
+	
 }

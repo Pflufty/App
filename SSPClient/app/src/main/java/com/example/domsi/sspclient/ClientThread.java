@@ -14,24 +14,18 @@ import java.net.UnknownHostException;
 /**
  * Created by User on 21.06.2016.
  */
-public class ClientThread extends AsyncTask<Void, String, String> {
+public class ClientThread extends AsyncTask<Void, String, String[]> {
 
     @Override
-    protected String doInBackground(Void... params) {
-        Socket client = null;
-        String gameWinner="";
+    protected String[] doInBackground(Void... params) {
+        String[] gameStats=new String[4];
 
         try {
-            client = new Socket("10.0.2.2", 9871);
 
-            PrintWriter outStream = new PrintWriter(client.getOutputStream(), true);
-            BufferedReader inStream = new BufferedReader(new InputStreamReader(client.getInputStream()));
-
-            outStream.println(MainActivity.username);
-
-            String input;
+            MainActivity.outStream.println("Search/"+OverviewActivtiy.username);
+            String input="";
             do {
-                input = inStream.readLine();
+                input = MainActivity.inStream.readLine();
             } while (input.equals("Queue/Wait"));
 
             String[] gameInfos=input.split("/");
@@ -57,9 +51,9 @@ public class ClientThread extends AsyncTask<Void, String, String> {
 
                 }
 
-                outStream.println(MainActivity.move);
+                MainActivity.outStream.println(MainActivity.move);
 
-                String answer = inStream.readLine();
+                String answer = MainActivity.inStream.readLine();
 
                 if (answer.startsWith("Match/Winner/")) {
 
@@ -70,21 +64,30 @@ public class ClientThread extends AsyncTask<Void, String, String> {
                     super.publishProgress(win);
                 }
 
-                inputFromServer = inStream.readLine();
+                inputFromServer = MainActivity.inStream.readLine();
             } while (inputFromServer.equals("Match/Next"));
 
-            Log.d("GameWinner",inputFromServer);
             String[] finishedGame=inputFromServer.split("/");
-            gameWinner=finishedGame[2];
-            Log.d("GameWinner",gameWinner);
+            gameStats[0]=finishedGame[2];
+            gameStats[1]=finishedGame[3];
+            gameStats[2]=finishedGame[4];
+            gameStats[3]=finishedGame[5];
 
-            client.close();
+            Log.d("GotInfos",gameStats[1]+"");
+            Log.d("GotInfos",gameStats[2]+"");
+            Log.d("GotInfos",gameStats[3]+"");
+
+            Log.d("GotInfos",finishedGame[3]+"");
+            Log.d("GotInfos",finishedGame[4]+"");
+            Log.d("GotInfos",finishedGame[5]+"");
+
+            MainActivity.client.close();
         } catch (UnknownHostException hostEx) {
             hostEx.printStackTrace();
         } catch (IOException IOEx) {
             System.err.println("No Connection");
         }
-        return gameWinner;
+        return gameStats;
     }
 
     @Override
@@ -105,7 +108,7 @@ public class ClientThread extends AsyncTask<Void, String, String> {
                 moveOtherPLayer = Integer.parseInt(infosP1[1]);
             }
 
-            MainActivity.setWinnerTxt(winner, points, moveOtherPLayer, MainActivity.ownPlayerNr);
+            MainActivity.setWinnerTxt(winner, points, moveOtherPLayer);
         }
 
         if(values[0].equals("postPlayername")){
@@ -114,13 +117,19 @@ public class ClientThread extends AsyncTask<Void, String, String> {
     }
 
     @Override
-    protected void onPostExecute(String winner) {
+    protected void onPostExecute(final String[] stats) {
         MainActivity.gameWinner.setTitle("Das Spiel ist vorbei!");
-        MainActivity.gameWinner.setMessage(winner+" hat das Match gewonnen!");
+        MainActivity.gameWinner.setMessage(stats[0]+" hat das Match gewonnen!");
         MainActivity.gameWinner.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                MainActivity.backToStart();
+                int[] newPlayerStats=new int[3];
+
+                newPlayerStats[0]=Integer.parseInt(stats[1]);
+                newPlayerStats[1]=Integer.parseInt(stats[2]);
+                newPlayerStats[2]=Integer.parseInt(stats[3]);
+
+                MainActivity.backToStart(newPlayerStats);
             }
         });
         MainActivity.gameWinner.show();
