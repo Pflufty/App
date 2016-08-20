@@ -14,7 +14,6 @@ public class QueuingThread extends Thread {
 
 		try {
 			if (Server.q.size() % 2 == 0 && Server.q.size() > 0) {
-				System.out.println(Server.q.size());
 				Player p1 = Server.q.poll();
 				Player p2 = Server.q.poll();
 				Match m = new Match(p1, p2);
@@ -33,8 +32,12 @@ public class QueuingThread extends Thread {
 					inP1 = m.getP1().getInStream().readLine();
 					moveP1 = Integer.parseInt(inP1);
 
+					System.out.println("Hey");
+					
 					inP2 = m.getP2().getInStream().readLine();
 					moveP2 = Integer.parseInt(inP2);
+					
+					System.out.println("Hey");
 
 					int winner = checkWinner(moveP1, moveP2);
 					String winnerName = "NoWinner";
@@ -58,6 +61,9 @@ public class QueuingThread extends Thread {
 						roundsToPlay--;
 						winnerName = m.getP2().getName();
 					}
+					
+					System.out.println("Hey");
+					
 					int p1Played=m.getP1().getPlayed();
 					p1Played+=1;
 					m.getP1().setPlayed(p1Played);
@@ -65,10 +71,8 @@ public class QueuingThread extends Thread {
 					int p2Played=m.getP2().getPlayed();
 					p2Played+=1;
 					m.getP2().setPlayed(p2Played);
-					
-					System.out.println(m.getP1().getPlayed());
-					System.out.println(m.getP2().getPlayed());
 
+					System.out.println("Hey");
 					m.getP1().getOutStream().println("Match/Winner/" + winnerName + "/" + m.getWinsP1() + ":" + moveP1
 							+ ";" + m.getWinsP2() + ":" + moveP2);
 					m.getP2().getOutStream().println("Match/Winner/" + winnerName + "/" + m.getWinsP1() + ":" + moveP1
@@ -83,10 +87,8 @@ public class QueuingThread extends Thread {
 				String winPlayer;
 				if (m.getWinsP1() > m.getWinsP2()) {
 					winPlayer = m.getP1().getName();
-					System.out.println(m.getP1().getName());
 				} else {
 					winPlayer = m.getP2().getName();
-					System.out.println(m.getP2().getName());
 				}
 
 				m.getP1().getOutStream().println("Match/Finish/" + winPlayer + "/" + m.getP1().getElo() + "/"
@@ -97,6 +99,10 @@ public class QueuingThread extends Thread {
 			} else {
 				Server.p.getOutStream().println("Queue/Wait");
 			}
+			
+			WaitingThread thread=new WaitingThread();
+			thread.start();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

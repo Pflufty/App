@@ -1,9 +1,6 @@
 package com.example.domsi.sspclient;
 
 import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +11,7 @@ import java.net.Socket;
  * Created by domsi on 15.08.2016.
  */
 
-    public class LogInThread extends AsyncTask<Void, Void, Void>{
+    public class LogedInThread extends AsyncTask<Void, Void, Void>{
     @Override
     protected Void doInBackground(Void... params) {
 
@@ -24,7 +21,9 @@ import java.net.Socket;
             MainActivity.outStream = new PrintWriter(MainActivity.client.getOutputStream(), true);
             MainActivity.inStream = new BufferedReader(new InputStreamReader(MainActivity.client.getInputStream()));
 
-            MainActivity.outStream.println("Connection/"+OverviewActivtiy.username);
+            if(OverviewActivtiy.elo==0) {
+                MainActivity.outStream.println("Connection/" + OverviewActivtiy.username);
+            }
 
             String input=MainActivity.inStream.readLine();
             if(input.startsWith("Game/Stats/")){
@@ -33,7 +32,6 @@ import java.net.Socket;
                 OverviewActivtiy.played=Integer.parseInt(stats[3]);
                 OverviewActivtiy.won=Integer.parseInt(stats[4]);
                 super.publishProgress();
-                this.cancel(true);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,6 +39,7 @@ import java.net.Socket;
         return null;
     }
 
+    @Override
     protected void onProgressUpdate(Void... values) {
         OverviewActivtiy.txtUsername.setText(OverviewActivtiy.username);
         OverviewActivtiy.txtElo.setText(OverviewActivtiy.elo+"");

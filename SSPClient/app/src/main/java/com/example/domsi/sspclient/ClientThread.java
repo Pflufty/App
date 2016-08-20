@@ -2,13 +2,8 @@ package com.example.domsi.sspclient;
 
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
@@ -72,14 +67,6 @@ public class ClientThread extends AsyncTask<Void, String, String[]> {
             gameStats[1]=finishedGame[3];
             gameStats[2]=finishedGame[4];
             gameStats[3]=finishedGame[5];
-
-            Log.d("GotInfos",gameStats[1]+"");
-            Log.d("GotInfos",gameStats[2]+"");
-            Log.d("GotInfos",gameStats[3]+"");
-
-            Log.d("GotInfos",finishedGame[3]+"");
-            Log.d("GotInfos",finishedGame[4]+"");
-            Log.d("GotInfos",finishedGame[5]+"");
 
             MainActivity.client.close();
         } catch (UnknownHostException hostEx) {

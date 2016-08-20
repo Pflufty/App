@@ -26,8 +26,8 @@ public class Server {
 			while(true){	
 				client = socket.accept();
 				p=new Player(client);
-				WaitingThread thread=new WaitingThread();
-				thread.start();
+				WaitingThread waitingThread=new WaitingThread();
+				waitingThread.start();
 			}
 		} catch (IOException IOEx) {
 			IOEx.printStackTrace();

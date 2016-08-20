@@ -26,12 +26,12 @@ public class WaitingThread extends Thread {
 
 					Server.q.add(Server.players.get(username));
 					System.out.println("Player " + username + " is searching an enemy!");
-					QueuingThread thread = new QueuingThread();
-					thread.start();
+					
+					QueuingThread queuingThread = new QueuingThread();
+					queuingThread.start();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-				this.stop();
 			}
 		} while (!(input.startsWith("Search/")));
 	}
