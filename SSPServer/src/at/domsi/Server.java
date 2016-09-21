@@ -26,7 +26,7 @@ public class Server {
 			while(true){	
 				client = socket.accept();
 				p=new Player(client);
-				WaitingThread waitingThread=new WaitingThread();
+				MatchmakingThread waitingThread=new MatchmakingThread();
 				waitingThread.start();
 			}
 		} catch (IOException IOEx) {

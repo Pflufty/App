@@ -9,10 +9,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-
 public class MainActivity extends AppCompatActivity {
 
     static TextView txtP1;
@@ -33,10 +29,6 @@ public class MainActivity extends AppCompatActivity {
     static AlertDialog.Builder gameWinner;
 
     private static MainActivity instance;
-
-    public static Socket client=null;
-    public static PrintWriter outStream=null;
-    public static BufferedReader inStream=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

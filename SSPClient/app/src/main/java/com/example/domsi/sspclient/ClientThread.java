@@ -2,6 +2,7 @@ package com.example.domsi.sspclient;
 
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -17,11 +18,11 @@ public class ClientThread extends AsyncTask<Void, String, String[]> {
 
         try {
 
-            MainActivity.outStream.println("Search/"+OverviewActivtiy.username);
+            OverviewActivtiy.outStream.println("Search/"+OverviewActivtiy.username);
             String input="";
             do {
-                input = MainActivity.inStream.readLine();
-            } while (input.equals("Queue/Wait"));
+                input =OverviewActivtiy.inStream.readLine();
+            } while (!(input.startsWith("Queue/Go/")));
 
             String[] gameInfos=input.split("/");
             String playerNr=gameInfos[2];
@@ -45,10 +46,10 @@ public class ClientThread extends AsyncTask<Void, String, String[]> {
                 while (MainActivity.selected == false) {
 
                 }
+                OverviewActivtiy.outStream.println("Match/Move/"+MainActivity.move);
+                OverviewActivtiy.outStream.flush();
 
-                MainActivity.outStream.println(MainActivity.move);
-
-                String answer = MainActivity.inStream.readLine();
+                String answer =OverviewActivtiy.inStream.readLine();
 
                 if (answer.startsWith("Match/Winner/")) {
 
@@ -59,7 +60,7 @@ public class ClientThread extends AsyncTask<Void, String, String[]> {
                     super.publishProgress(win);
                 }
 
-                inputFromServer = MainActivity.inStream.readLine();
+                inputFromServer =OverviewActivtiy.inStream.readLine();
             } while (inputFromServer.equals("Match/Next"));
 
             String[] finishedGame=inputFromServer.split("/");
@@ -68,7 +69,7 @@ public class ClientThread extends AsyncTask<Void, String, String[]> {
             gameStats[2]=finishedGame[4];
             gameStats[3]=finishedGame[5];
 
-            MainActivity.client.close();
+            OverviewActivtiy.client.close();
         } catch (UnknownHostException hostEx) {
             hostEx.printStackTrace();
         } catch (IOException IOEx) {

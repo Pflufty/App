@@ -16,22 +16,21 @@ import java.net.Socket;
     protected Void doInBackground(Void... params) {
 
         try {
-            MainActivity.client = new Socket("10.0.2.2", 9871);
+            OverviewActivtiy.client = new Socket("10.0.2.2", 9871);
 
-            MainActivity.outStream = new PrintWriter(MainActivity.client.getOutputStream(), true);
-            MainActivity.inStream = new BufferedReader(new InputStreamReader(MainActivity.client.getInputStream()));
+            OverviewActivtiy.outStream = new PrintWriter(OverviewActivtiy.client.getOutputStream(), true);
+            OverviewActivtiy.inStream = new BufferedReader(new InputStreamReader(OverviewActivtiy.client.getInputStream()));
 
             if(OverviewActivtiy.elo==0) {
-                MainActivity.outStream.println("Connection/" + OverviewActivtiy.username);
+                OverviewActivtiy.outStream.println("Connection/" + OverviewActivtiy.username);
             }
 
-            String input=MainActivity.inStream.readLine();
+            String input=OverviewActivtiy.inStream.readLine();
             if(input.startsWith("Game/Stats/")){
                 String[] stats=input.split("/");
                 OverviewActivtiy.elo=Integer.parseInt(stats[2]);
                 OverviewActivtiy.played=Integer.parseInt(stats[3]);
                 OverviewActivtiy.won=Integer.parseInt(stats[4]);
-                super.publishProgress();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,7 +39,7 @@ import java.net.Socket;
     }
 
     @Override
-    protected void onProgressUpdate(Void... values) {
+    protected void onPostExecute(Void aVoid) {
         OverviewActivtiy.txtUsername.setText(OverviewActivtiy.username);
         OverviewActivtiy.txtElo.setText(OverviewActivtiy.elo+"");
         OverviewActivtiy.txtPlayed.setText(OverviewActivtiy.played+"");

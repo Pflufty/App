@@ -2,14 +2,14 @@ package at.domsi;
 
 import java.io.IOException;
 
-public class WaitingThread extends Thread {
-	public WaitingThread() {
+public class MatchmakingThread extends Thread {
+	public MatchmakingThread() {
 
 	}
 
 	public void run() {
 		String input = "";
-		do {
+		while (true) {
 			try {
 				input = Server.p.getInStream().readLine();
 				String username = "";
@@ -27,12 +27,16 @@ public class WaitingThread extends Thread {
 					Server.q.add(Server.players.get(username));
 					System.out.println("Player " + username + " is searching an enemy!");
 					
-					QueuingThread queuingThread = new QueuingThread();
-					queuingThread.start();
+					if (Server.q.size() % 2 == 0 && Server.q.size() > 0) {
+						MatchThread qThread=new MatchThread();
+						qThread.start();
+					} else {
+						Server.p.getOutStream().println("Queue/Wait");
+					}
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} while (!(input.startsWith("Search/")));
+		}
 	}
 }

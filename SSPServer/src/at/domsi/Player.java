@@ -25,7 +25,7 @@ public class Player {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.elo=1000;
+		this.elo=1001;
 		this.played=0;
 		this.won=0;
 	}

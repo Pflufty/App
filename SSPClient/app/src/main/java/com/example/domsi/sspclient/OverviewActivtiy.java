@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 /**
  * Created by domsi on 15.08.2016.
  */
@@ -19,6 +23,10 @@ public class OverviewActivtiy extends Activity{
     public static TextView txtElo;
     public static TextView txtWon;
     public static TextView txtPlayed;
+
+    public static Socket client=null;
+    public static PrintWriter outStream=null;
+    public static BufferedReader inStream=null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

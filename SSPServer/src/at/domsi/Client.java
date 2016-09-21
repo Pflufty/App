@@ -16,11 +16,9 @@ public class Client {
 
 			PrintWriter outStream = new PrintWriter(client.getOutputStream(), true);
 			BufferedReader inStream = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			
 			Scanner sc = new Scanner(System.in);
 
 			System.out.println("Connection");
-
 			System.out.println("Gib deinen Namen ein:");
 			String username=sc.next();
 			outStream.println("Connection/"+username);
@@ -29,9 +27,9 @@ public class Client {
 			
 			outStream.println("Search/"+username);
 			
-			while (!(inStream.readLine().startsWith("Queue/Go/"))) {
-
-			}
+			do{
+				
+			}while (!(inStream.readLine().startsWith("Queue/Go/")));
 			
 			String inputFromServer;
 			
@@ -42,8 +40,9 @@ public class Client {
 					System.out.println();
 					System.out.println("Gib eine Nummer ein<1,2,3>:");
 					input = sc.nextInt();
-					outStream.println(input);
-				} while (input > 3);
+				} while (input > 4 && input < 0);
+				outStream.println(input);
+				outStream.flush();
 
 				String answer = inStream.readLine();
 
