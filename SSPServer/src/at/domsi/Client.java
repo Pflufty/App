@@ -24,25 +24,26 @@ public class Client {
 			outStream.println("Connection/"+username);
 			
 			System.out.println(inStream.readLine());
-			
 			outStream.println("Search/"+username);
 			
+			String input;
 			do{
-				
-			}while (!(inStream.readLine().startsWith("Queue/Go/")));
+				input=inStream.readLine();
+			}while (!(input.startsWith("Queue/Go/")));
 			
 			String inputFromServer;
+			int matchId=Integer.parseInt(input.split("/")[2]);
+			System.out.println("MatchID: "+matchId);
 			
 			do {
 
-				int input;
+				int movePlayed;
 				do {
 					System.out.println();
 					System.out.println("Gib eine Nummer ein<1,2,3>:");
-					input = sc.nextInt();
-				} while (input > 4 && input < 0);
-				outStream.println(input);
-				outStream.flush();
+					movePlayed = sc.nextInt();
+				} while (movePlayed > 4 && movePlayed < 0);
+				outStream.println("Match/Move/"+matchId+"/"+username+"/"+movePlayed);
 
 				String answer = inStream.readLine();
 

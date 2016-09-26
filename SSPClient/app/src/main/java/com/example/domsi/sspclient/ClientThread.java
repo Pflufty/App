@@ -24,9 +24,11 @@ public class ClientThread extends AsyncTask<Void, String, String[]> {
                 input =OverviewActivtiy.inStream.readLine();
             } while (!(input.startsWith("Queue/Go/")));
 
+            MainActivity.matchId=Integer.parseInt(input.split("/")[2]);
+
             String[] gameInfos=input.split("/");
-            String playerNr=gameInfos[2];
-            String[] playerNames=gameInfos[3].split(";");
+            String playerNr=gameInfos[3];
+            String[] playerNames=gameInfos[4].split(";");
 
             MainActivity.ownPlayerNr = Integer.parseInt(playerNr);
 
@@ -46,8 +48,8 @@ public class ClientThread extends AsyncTask<Void, String, String[]> {
                 while (MainActivity.selected == false) {
 
                 }
-                OverviewActivtiy.outStream.println("Match/Move/"+MainActivity.move);
-                OverviewActivtiy.outStream.flush();
+                Log.d("Move Output", "Match/Move/"+MainActivity.matchId+"/"+OverviewActivtiy.username+"/"+MainActivity.move);
+                OverviewActivtiy.outStream.println("Match/Move/"+MainActivity.matchId+"/"+OverviewActivtiy.username+"/"+MainActivity.move);
 
                 String answer =OverviewActivtiy.inStream.readLine();
 

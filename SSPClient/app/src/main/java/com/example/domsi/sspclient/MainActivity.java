@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     static Button btnPapier;
 
     static int move = 0;
+    static int matchId=0;
     static boolean selected = false;
     static int ownPlayerNr=0;
 

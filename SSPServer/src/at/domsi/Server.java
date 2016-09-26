@@ -13,6 +13,7 @@ public class Server {
 	public static Queue<Player> q = new LinkedList<>();
 	public static HashMap<String, Player> players=new HashMap<>();
 	public static Player p=null;
+	public static HashMap<Integer, Match> matches = new HashMap<>();
 	
 	public static void main(String[] args) throws UnknownHostException{
 
@@ -28,6 +29,9 @@ public class Server {
 				p=new Player(client);
 				MatchmakingThread waitingThread=new MatchmakingThread();
 				waitingThread.start();
+				
+				CheckPlayedMoves checkThread=new CheckPlayedMoves();
+				checkThread.start();
 			}
 		} catch (IOException IOEx) {
 			IOEx.printStackTrace();
